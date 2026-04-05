@@ -470,7 +470,7 @@
             margin-bottom: 15px;
         }
         .footer-logo img {
-            max-height: 40px;
+            max-height: 100px;
         }
 
         .footer-bottom {
@@ -554,7 +554,7 @@
         <ul class="drawer-nav">
             <li><a href="#" class="drawer-link active" onclick="navigate('home')">الرئيسية</a></li>
             <li><a href="#" class="drawer-link" onclick="navigate('about')">من نحن</a></li>
-            <li><a href="#" class="drawer-link" onclick="navigate('services')">خدماتنا</a></li>
+            <li><a href="#" class="drawer-link" onclick="navigate('questions')">خدماتنا</a></li>
             <li><a href="#" class="drawer-link" onclick="navigate('shop')">المتجر</a></li>
         </ul>
     </div>
@@ -567,12 +567,12 @@
             <div class="hero-overlay reveal">
                 <div class="hero-category">مستشارة مظهر</div>
                 <h1 class="hero-title">اكتشفي أسلوبك<br>الخاص المتميز</h1>
-                <button class="btn layout-btn" onclick="navigate('services')">احجزي الآن</button>
+                <button class="btn layout-btn" onclick="navigate('questions')">احجزي الآن</button>
             </div>
         </div>
         
         <div class="reveal editorial-section">
-             <img src="pic 1.png" alt="مظهر ١">
+             <img src="pic 1.png" data-edit="home-pic-1" alt="مظهر ١">
              <div class="editorial-overlay">
                  <div class="editorial-category">المجموعة الجديدة</div>
                  <h2 class="editorial-title">أناقة الخريف</h2>
@@ -581,7 +581,7 @@
         </div>
 
         <div class="reveal editorial-section">
-             <img src="pic 5.png" alt="مظهر ٢">
+             <img src="pic 5.png" data-edit="home-pic-2" alt="مظهر ٢">
              <div class="editorial-overlay">
                  <div class="editorial-category">إطلالات كلاسيكية</div>
                  <h2 class="editorial-title">جماليات ثابتة</h2>
@@ -590,11 +590,11 @@
         </div>
 
         <div class="reveal editorial-section">
-             <img src="pic 3.png" alt="مظهر ٣">
+             <img src="pic 3.png" data-edit="home-pic-3" alt="مظهر ٣">
              <div class="editorial-overlay">
                  <div class="editorial-category">أحدث التنسيقات</div>
                  <h2 class="editorial-title">تفاصيل تصنع الفارق</h2>
-                 <button class="btn" onclick="navigate('services')">احجزي استشارة</button>
+                 <button class="btn" onclick="navigate('questions')">احجزي استشارة</button>
              </div>
         </div>
     </section>
@@ -608,7 +608,7 @@
                     <h2>رؤية للأناقة</h2>
                     <p>مرحباً بكم. أنا مستشارة مظهر وأزياء ملتزمة بالارتقاء بأسلوبك الشخصي. من خلال نهج راقٍ في اختيار الملابس وتنسيقها، أساعد أينما كنت في ترجمة الثقة الداخلية إلى حضور خارجي متميز يلفت الأنظار.</p>
                     <p>لدي رؤية تتسم بالفخامة البسيطة، والحياكة المتقنة، والأناقة التي تدوم طويلًا. أؤمن ببناء خزانة ملابس تتجاوز حدود المواسم ولا تنتهي موضتها. دعينا نبدأ معاً رحلة اكتشاف أسلوبك الخاص والفريد.</p>
-                    <button class="btn outline" style="margin-top:20px;" onclick="navigate('services')">عرض الخدمات</button>
+                    <button class="btn outline" style="margin-top:20px;" onclick="navigate('questions')">عرض الخدمات</button>
                 </div>
             </div>
         </div>
@@ -663,6 +663,93 @@
         </div>
     </section>
 
+    <!-- PRE-BOOKING QUESTIONS PAGE -->
+    <section id="questions" class="page reveal">
+        <div class="content-container" style="max-width: 600px;">
+            <h1 class="section-title">استبيان الاستشارة</h1>
+            <div class="booking-container reveal">
+                <form id="preBookingForm" onsubmit="handlePreBookingSubmit(event)">
+                    <div id="dynamicQuestionsContainer"></div>
+                    <button type="submit" class="btn" style="margin-top:20px; width:100%;">متابعة الحجز</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ADMIN LOGIN PAGE -->
+    <section id="admin-login" class="page reveal">
+        <div class="content-container" style="max-width: 450px; text-align:center;">
+            <div class="admin-auth-card reveal" style="background:#ffffff; padding:50px 40px; border-radius:30px; box-shadow:0 15px 40px rgba(28, 43, 94, 0.08); margin:40px auto; overflow: hidden; position: relative;">
+                <h1 style="font-family:var(--font-serif); font-size:2.4rem; color:var(--color-text); margin-bottom:30px;">مدخل الإدارة</h1>
+                <form id="adminLoginForm" onsubmit="handleAdminLogin(event)">
+                    <div class="form-group">
+                        <input type="text" id="adminUser" placeholder=" " required style="border-radius:14px; border:1px solid #eaeaea; background:#fafafa; box-shadow:inset 0 2px 4px rgba(0,0,0,0.02);">
+                        <label style="font-size:0.95rem;">اسم المستخدم</label>
+                    </div>
+                    <div class="form-group" style="margin-top:25px;">
+                        <input type="password" id="adminPass" placeholder=" " required style="border-radius:14px; border:1px solid #eaeaea; background:#fafafa; box-shadow:inset 0 2px 4px rgba(0,0,0,0.02);">
+                        <label style="font-size:0.95rem;">كلمة المرور</label>
+                    </div>
+                    <button type="submit" class="btn" style="margin-top:35px; width:100%; border-radius:16px; font-weight:bold; letter-spacing:1px; padding:15px; font-size:1.1rem; box-shadow:0 8px 15px rgba(28, 43, 94, 0.15);">تسجيل الدخول</button>
+                </form>
+                <div id="adminLoginError" style="color:#e74c3c; margin-top:15px; display:none; font-family:var(--font-sans); font-size:0.9rem;">البيانات غير صحيحة، حاول مجدداً</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ADMIN DASHBOARD PAGE -->
+    <section id="admin-dashboard" class="page reveal">
+        <div class="content-container">
+            <h1 class="section-title">الإعدادات</h1>
+            
+            <div class="admin-tabs" style="display:flex; justify-content:center; gap:10px; margin-bottom:30px; flex-wrap:wrap;">
+                <button class="btn layout-btn" onclick="showAdminTab('tab-questions')" id="btn-tab-questions">الأسئلة</button>
+                <button class="btn layout-btn" onclick="showAdminTab('tab-times')" id="btn-tab-times">الأوقات</button>
+                <button class="btn layout-btn" onclick="showAdminTab('tab-password')" id="btn-tab-password">الحساب</button>
+                <button class="btn" onclick="logoutAdmin()" style="background:var(--color-bg); color:var(--color-text); border:1px solid var(--color-text);">خروج</button>
+            </div>
+
+            <div id="tab-questions" class="admin-tab-content booking-container reveal">
+                <h3>أسئلة ما قبل الحجز</h3>
+                <div id="adminQuestionsList"></div>
+                <button class="btn outline" style="margin-top:15px;" onclick="addAdminQuestion()">+ إضافة سؤال</button>
+                <hr style="margin:30px 0; border:0; border-top:1px solid #eaeaea;">
+                <button class="btn" style="width:100%;" onclick="saveAllBookingSettings()">حفظ الأسئلة</button>
+                <div id="msgSettingsQuestions" style="color:green; margin-top:10px; display:none;">تم الحفظ بنجاح</div>
+            </div>
+
+            <div id="tab-times" class="admin-tab-content booking-container reveal" style="display:none;">
+                <h3 style="margin-bottom:10px;">الأيام المتاحة للحجز</h3>
+                <p style="font-size:0.9rem; margin-bottom:15px; font-family:var(--font-sans); color:#666;">انقري على اليوم لتفعيله (أخضر) أو إخفائه المتكرر (باهت) من الحجز للعملاء:</p>
+                <div class="calendar-dates" id="adminToggleCalendar" style="margin-bottom:30px;"></div>
+                
+                <h3 style="margin-top:40px;">أوقات الحجز اليومية</h3>
+                <div id="adminTimeSlotsList"></div>
+                <button class="btn outline" style="margin-top:15px; margin-bottom:30px;" onclick="addAdminTimeSlot()">+ إضافة وقت</button>
+                
+                <hr style="margin:40px 0; border:0; border-top:1px solid #eaeaea;">
+                <button class="btn" style="width:100%;" onclick="saveAllBookingSettings()">حفظ الأوقات</button>
+                <div id="msgSettingsTimes" style="color:green; margin-top:10px; display:none;">تم الحفظ بنجاح</div>
+            </div>
+
+            <!-- Images Tab Removed per specific request -->
+
+            <div id="tab-password" class="admin-tab-content booking-container reveal" style="display:none;">
+                <h3>تحديث بيانات الدخول</h3>
+                <div class="form-group">
+                    <input type="text" id="newAdminUser" placeholder=" ">
+                    <label>اسم مستخدم جديد</label>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="newAdminPass" placeholder=" ">
+                    <label>كلمة مرور جديدة</label>
+                </div>
+                <button class="btn" style="margin-top:20px; width:100%;" onclick="saveAdminCredentials()">حفظ الدخول</button>
+                <div id="msgCreds" style="color:green; margin-top:10px; display:none;">تم الحفظ بنجاح</div>
+            </div>
+        </div>
+    </section>
+
     <!-- SHOP PAGE -->
     <section id="shop" class="page reveal">
         <div class="content-container">
@@ -670,19 +757,19 @@
             
             <div class="shop-grid">
                 <div class="product-card reveal">
-                    <img src="pic 1.png" class="product-image" alt="منتج ١">
+                    <img src="pic 1.png" data-edit="shop-pic-1" class="product-image" alt="منتج ١">
                     <div class="product-title">جاكيت تويد كلاسيكي</div>
                     <div class="product-price">$850</div>
                     <button class="btn outline" onclick="alert('تمت الإضافة للسلة')">إضافة للسلة</button>
                 </div>
                 <div class="product-card reveal">
-                    <img src="pic 5.png" class="product-image" alt="منتج ٢">
+                    <img src="pic 5.png" data-edit="shop-pic-2" class="product-image" alt="منتج ٢">
                     <div class="product-title">بلوزة حرير مسائية</div>
                     <div class="product-price">$420</div>
                     <button class="btn outline" onclick="alert('تمت الإضافة للسلة')">إضافة للسلة</button>
                 </div>
                 <div class="product-card reveal">
-                    <img src="pic 2.png" class="product-image" alt="منتج ٣">
+                    <img src="pic 2.png" data-edit="shop-pic-3" class="product-image" alt="منتج ٣">
                     <div class="product-title">بنطلون بتفصيل متقن</div>
                     <div class="product-price">$600</div>
                     <button class="btn outline" onclick="alert('تمت الإضافة للسلة')">إضافة للسلة</button>
@@ -760,6 +847,30 @@
     </a>
 
     <script>
+        // --- Admin/LS Init ---
+        if(!localStorage.getItem('admin_credentials')) localStorage.setItem('admin_credentials', JSON.stringify({user: 'admin', pass: 'admin123'}));
+        if(!localStorage.getItem('admin_questions')) localStorage.setItem('admin_questions', JSON.stringify(['ما هو هدفك من الاستشارة؟', 'ما هي ميزانيتك التقريبية؟', 'كيف سمعتِ عنا؟', 'هل سبق لكِ حجز استشارة مظهر من قبل؟']));
+        if(!localStorage.getItem('admin_time_slots')) localStorage.setItem('admin_time_slots', JSON.stringify(['10:00 AM', '1:00 PM', '3:30 PM', '5:00 PM']));
+        if(!localStorage.getItem('admin_blocked_dates')) localStorage.setItem('admin_blocked_dates', JSON.stringify([]));
+        if(!localStorage.getItem('admin_images')) localStorage.setItem('admin_images', JSON.stringify({}));
+
+        // Run immediately
+        const initSavedImages = () => {
+            const ls = JSON.parse(localStorage.getItem('admin_images') || '{}');
+            document.querySelectorAll('img[data-edit]').forEach(img => {
+                const id = img.getAttribute('data-edit');
+                if(ls[id]) img.src = ls[id];
+            });
+        };
+        initSavedImages();
+
+        window.addEventListener('hashchange', () => {
+            if(window.location.hash === '#admin') navigate('admin-login');
+        });
+        window.addEventListener('load', () => {
+            if(window.location.hash === '#admin') navigate('admin-login');
+        });
+
         // --- Navigation Logic with Fade/Slide ---
         function navigate(pageId) {
             document.querySelectorAll('.page').forEach(page => {
@@ -867,14 +978,133 @@
             localStorage.setItem(STORAGE_KEY, JSON.stringify(bookings));
         }
 
-        function renderCalendar() {
-            const datesContainer = document.getElementById('calendarDates');
-            datesContainer.innerHTML = '';
+        // --- Pre-Booking Logic ---
+        function getSafeAdminQuestions() {
+            let qs = null;
+            try {
+                let stored = localStorage.getItem('admin_questions');
+                if(stored) qs = JSON.parse(stored);
+            } catch(e) {}
+            if(!Array.isArray(qs) || qs.length === 0) {
+                qs = [
+                    'ما هو هدفك من الاستشارة؟',
+                    'ما هي ميزانيتك التقريبية؟',
+                    'كيف سمعتِ عنا؟',
+                    'هل سبق لكِ حجز استشارة مظهر من قبل؟'
+                ];
+                localStorage.setItem('admin_questions', JSON.stringify(qs));
+            }
+            return qs;
+        }
+
+        function renderPreBookingQuestions() {
+            const container = document.getElementById('dynamicQuestionsContainer');
+            if(!container) return;
+            container.innerHTML = '';
+            const qList = getSafeAdminQuestions();
+            qList.forEach((q, idx) => {
+                const div = document.createElement('div');
+                div.className = 'form-group';
+                div.innerHTML = `
+                    <input type="text" id="preQ_${idx}" placeholder=" " required>
+                    <label>${q}</label>
+                `;
+                container.appendChild(div);
+            });
+        }
+        function handlePreBookingSubmit(e) {
+            e.preventDefault();
+            // User proceeds straight to calendar; answers ignored per instruction.
+            navigate('services');
+        }
+
+        // --- Admin Dashboard Logic ---
+        let adminSessionActive = false;
+
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const u = document.getElementById('adminUser').value;
+            const p = document.getElementById('adminPass').value;
+            const creds = JSON.parse(localStorage.getItem('admin_credentials'));
+            
+            if(u === creds.user && p === creds.pass) {
+                adminSessionActive = true;
+                document.getElementById('adminLoginForm').reset();
+                document.getElementById('adminLoginError').style.display = 'none';
+                initAdminDashboard();
+                navigate('admin-dashboard');
+            } else {
+                document.getElementById('adminLoginError').style.display = 'block';
+            }
+        }
+
+        function logoutAdmin() {
+            adminSessionActive = false;
+            navigate('home');
+        }
+
+        function showAdminTab(tabId) {
+            document.querySelectorAll('.admin-tab-content').forEach(el => el.style.display = 'none');
+            document.getElementById(tabId).style.display = 'block';
+        }
+
+        function initAdminDashboard() {
+            if(!adminSessionActive) return navigate('admin-login');
+            renderAdminQuestions();
+            renderAdminTimes();
+            renderAdminToggleCalendar();
+        }
+
+        function renderAdminQuestions() {
+            const c = document.getElementById('adminQuestionsList');
+            if(!c) return;
+            const qs = getSafeAdminQuestions();
+            c.innerHTML = qs.map((q, i) => `
+                <div style="display:flex; margin-bottom:10px; gap:10px;">
+                    <input type="text" class="admin-q-inp" value="${String(q).replace(/"/g, '&quot;')}" style="flex:1; padding:10px;">
+                    <button class="btn outline" onclick="this.parentElement.remove()" style="padding:10px; border-color:red; color:red;">حذف</button>
+                </div>
+            `).join('');
+        }
+        function addAdminQuestion() {
+            const c = document.getElementById('adminQuestionsList');
+            c.insertAdjacentHTML('beforeend', `
+                <div style="display:flex; margin-bottom:10px; gap:10px;">
+                    <input type="text" class="admin-q-inp" value="" placeholder="السؤال..." style="flex:1; padding:10px;">
+                    <button class="btn outline" onclick="this.parentElement.remove()" style="padding:10px; border-color:red; color:red;">حذف</button>
+                </div>
+            `);
+        }
+
+        function renderAdminTimes() {
+            const c = document.getElementById('adminTimeSlotsList');
+            const ts = JSON.parse(localStorage.getItem('admin_time_slots') || '[]');
+            c.innerHTML = ts.map(t => `
+                <div style="display:flex; margin-bottom:10px; gap:10px;">
+                    <input type="text" class="admin-t-inp" value="${t}" style="flex:1; padding:10px;" dir="ltr">
+                    <button class="btn outline" onclick="this.parentElement.remove()" style="padding:10px; border-color:red; color:red;">حذف</button>
+                </div>
+            `).join('');
+        }
+        function addAdminTimeSlot() {
+            document.getElementById('adminTimeSlotsList').insertAdjacentHTML('beforeend', `
+                <div style="display:flex; margin-bottom:10px; gap:10px;">
+                    <input type="text" class="admin-t-inp" value="" placeholder="10:00 AM" style="flex:1; padding:10px;" dir="ltr">
+                    <button class="btn outline" onclick="this.parentElement.remove()" style="padding:10px; border-color:red; color:red;">حذف</button>
+                </div>
+            `);
+        }
+
+        function renderAdminToggleCalendar() {
+            const container = document.getElementById('adminToggleCalendar');
+            if(!container) return;
+            container.innerHTML = '';
+            const activeDates = JSON.parse(localStorage.getItem('admin_active_dates') || '[]');
             
             const today = new Date();
             const days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
 
-            for(let i=1; i<=7; i++) {
+            for(let i=1; i<=45; i++) {
                 const date = new Date(today);
                 date.setDate(today.getDate() + i);
                 
@@ -884,77 +1114,146 @@
 
                 const card = document.createElement('div');
                 card.className = 'date-card';
+                if(activeDates.includes(dStr)) {
+                    card.classList.add('selected'); 
+                    card.style.background = 'var(--color-accent)'; 
+                } else {
+                    card.style.opacity = '0.5';
+                }
+
+                card.innerHTML = `<div class="day">${dName}</div><div class="num">${dNum}</div>`;
+                
+                card.onclick = () => toggleAdminActiveDate(card, dStr);
+                container.appendChild(card);
+            }
+        }
+
+        function toggleAdminActiveDate(card, dStr) {
+            let activeDates = JSON.parse(localStorage.getItem('admin_active_dates') || '[]');
+            if(activeDates.includes(dStr)) {
+                activeDates = activeDates.filter(d => d !== dStr);
+                card.classList.remove('selected');
+                card.style.background = '';
+                card.style.opacity = '0.5';
+            } else {
+                activeDates.push(dStr);
+                card.classList.add('selected');
+                card.style.background = 'var(--color-accent)';
+                card.style.opacity = '1';
+            }
+            localStorage.setItem('admin_active_dates', JSON.stringify(activeDates));
+            renderCalendar();
+        }
+
+        function saveAllBookingSettings() {
+            const qs = Array.from(document.querySelectorAll('.admin-q-inp')).map(el => el.value).filter(v=>v.trim()!=='');
+            localStorage.setItem('admin_questions', JSON.stringify(qs));
+            
+            const ts = Array.from(document.querySelectorAll('.admin-t-inp')).map(el => el.value).filter(v=>v.trim()!=='');
+            localStorage.setItem('admin_time_slots', JSON.stringify(ts));
+            
+            const btnQ = document.getElementById('msgSettingsQuestions');
+            const btnT = document.getElementById('msgSettingsTimes');
+            if(btnQ) { btnQ.style.display = 'block'; setTimeout(() => btnQ.style.display='none', 3000); }
+            if(btnT) { btnT.style.display = 'block'; setTimeout(() => btnT.style.display='none', 3000); }
+            
+            renderPreBookingQuestions();
+            renderTimeSlotsUI();
+        }
+
+        function saveAdminCredentials() {
+            const u = document.getElementById('newAdminUser').value.trim();
+            const p = document.getElementById('newAdminPass').value.trim();
+            if(!u || !p) return alert('الرجاء تعبئة البيانات');
+            localStorage.setItem('admin_credentials', JSON.stringify({user: u, pass: p}));
+            showMsg('msgCreds');
+        }
+
+        function showMsg(id) {
+            document.getElementById(id).style.display = 'block';
+            setTimeout(() => document.getElementById(id).style.display = 'none', 3000);
+        }
+
+        // --- Calendar Override ---
+        function renderCalendar() {
+            const datesContainer = document.getElementById('calendarDates');
+            if(!datesContainer) return;
+            datesContainer.innerHTML = '';
+            
+            let activeDates = JSON.parse(localStorage.getItem('admin_active_dates') || 'null');
+            if(!activeDates) {
+                activeDates = [];
+                const t = new Date();
+                for(let i=1; i<=7; i++) {
+                    const d = new Date(t);
+                    d.setDate(t.getDate()+i);
+                    activeDates.push(d.toISOString().split('T')[0]);
+                }
+                localStorage.setItem('admin_active_dates', JSON.stringify(activeDates));
+            }
+
+            const today = new Date();
+            const days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+
+            let firstValidCard = null;
+            let firstValidDstr = null;
+
+            for(let i=1; i<=30; i++) {
+                const date = new Date(today);
+                date.setDate(today.getDate() + i);
+                
+                const dName = days[date.getDay()];
+                const dNum = date.getDate();
+                const dStr = date.toISOString().split('T')[0];
+                
+                const isBlocked = !activeDates.includes(dStr);
+
+                const card = document.createElement('div');
+                card.className = 'date-card';
+                if(isBlocked) {
+                    card.style.opacity = '0.3';
+                    card.style.pointerEvents = 'none';
+                }
+
                 card.innerHTML = `<div class="day">${dName}</div><div class="num">${dNum}</div>`;
                 
                 card.onclick = () => selectDate(card, dStr);
                 datesContainer.appendChild(card);
 
-                if(i === 1) selectDate(card, dStr);
-            }
-        }
-
-        function selectDate(element, dateStr) {
-            document.querySelectorAll('.date-card').forEach(el => el.classList.remove('selected'));
-            element.classList.add('selected');
-            selectedDateStr = dateStr;
-            
-            selectedTimeStr = null;
-            if(selectedTimeElement) {
-                selectedTimeElement.classList.remove('selected');
-                selectedTimeElement = null;
-            }
-            syncBookedTimes(dateStr);
-        }
-
-        function syncBookedTimes(dateStr) {
-            const bookings = getBookings();
-            const bookedForDate = bookings[dateStr] || [];
-
-            document.querySelectorAll('.time-slot').forEach(slot => {
-                const t = slot.textContent;
-                slot.classList.remove('booked', 'selected');
-                
-                if (bookedForDate.includes(t)) {
-                    slot.classList.add('booked');
+                if(!isBlocked && !firstValidCard) {
+                    firstValidCard = card;
+                    firstValidDstr = dStr;
                 }
+            }
+
+            if(firstValidCard) selectDate(firstValidCard, firstValidDstr);
+        }
+
+        function renderTimeSlotsUI() {
+            const tsObj = document.getElementById('timeSlots');
+            if(!tsObj) return;
+            const ts = JSON.parse(localStorage.getItem('admin_time_slots') || '[]');
+            tsObj.innerHTML = ts.map(t => `<div class="time-slot" onclick="selectTime(this, '${t}')">${t}</div>`).join('');
+            
+            // Re-bind ripple effect on dynamic elements
+            document.querySelectorAll('.time-slot').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    let ripple = document.createElement('span');
+                    ripple.classList.add('ripple');
+                    this.appendChild(ripple);
+                    let rect = this.getBoundingClientRect();
+                    let x = e.clientX ? e.clientX - rect.left : rect.width / 2;
+                    let y = e.clientY ? e.clientY - rect.top : rect.height / 2;
+                    ripple.style.left = `${x}px`;
+                    ripple.style.top = `${y}px`;
+                    setTimeout(() => ripple.remove(), 600);
+                });
             });
         }
 
-        function selectTime(element, timeStr) {
-            if(element.classList.contains('booked')) return;
-            
-            document.querySelectorAll('.time-slot').forEach(el => el.classList.remove('selected'));
-            element.classList.add('selected');
-            selectedTimeElement = element;
-            selectedTimeStr = timeStr;
-        }
-
-        function submitBooking(e) {
-            e.preventDefault();
-            
-            if(!selectedDateStr) {
-                alert('الرجاء اختيار التاريخ.'); return;
-            }
-            if(!selectedTimeStr) {
-                alert('الرجاء اختيار الوقت المناسب.'); return;
-            }
-
-            const name = document.getElementById('clientName').value;
-            // Add booking to LS
-            addBooking(selectedDateStr, selectedTimeStr);
-            syncBookedTimes(selectedDateStr);
-            selectedTimeStr = null;
-            
-            const whatsappNumber = "0000000000"; // REPLACE WITH ACTUAL WA NUMBER
-            const message = `مرحباً، أود تأكيد حجز استشارة المظهر.%0A%0A*الاسم:* ${name}%0A*التاريخ:* ${selectedDateStr}%0A*الوقت:* ${selectedTimeStr}%0A%0Aشكراً لك!`;
-            
-            const waUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
-            
-            e.target.reset();
-            window.open(waUrl, '_blank');
-        }
-
+        renderTimeSlotsUI();
         renderCalendar();
+        renderPreBookingQuestions();
     </script>
 </body>
 </html>
