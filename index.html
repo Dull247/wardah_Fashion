@@ -668,8 +668,13 @@
         <div class="content-container" style="max-width: 600px;">
             <h1 class="section-title">استبيان الاستشارة</h1>
             <div class="booking-container reveal">
-                <form id="preBookingForm" onsubmit="handlePreBookingSubmit(event)">
-                    <div id="dynamicQuestionsContainer"></div>
+                <form id="preBookingForm" class="booking-form" onsubmit="handlePreBookingSubmit(event)">
+                    <div id="dynamicQuestionsContainer" style="display:flex; flex-direction:column; gap:25px;">
+                        <div class="form-group"><input type="text" id="preQ_0" placeholder=" " required><label>ما هو هدفك من الاستشارة؟</label></div>
+                        <div class="form-group"><input type="text" id="preQ_1" placeholder=" " required><label>ما هي ميزانيتك التقريبية؟</label></div>
+                        <div class="form-group"><input type="text" id="preQ_2" placeholder=" " required><label>كيف سمعتِ عنا؟</label></div>
+                        <div class="form-group"><input type="text" id="preQ_3" placeholder=" " required><label>هل سبق لكِ حجز استشارة مظهر من قبل؟</label></div>
+                    </div>
                     <button type="submit" class="btn" style="margin-top:20px; width:100%;">متابعة الحجز</button>
                 </form>
             </div>
@@ -703,14 +708,14 @@
             <h1 class="section-title">الإعدادات</h1>
             
             <div class="admin-tabs" style="display:flex; justify-content:center; gap:10px; margin-bottom:30px; flex-wrap:wrap;">
-                <button class="btn layout-btn" onclick="showAdminTab('tab-questions')" id="btn-tab-questions">الأسئلة</button>
+                <button class="btn layout-btn" onclick="showAdminTab('tab-questions')" id="btn-tab-questions">استبيان الاستشارة</button>
                 <button class="btn layout-btn" onclick="showAdminTab('tab-times')" id="btn-tab-times">الأوقات</button>
                 <button class="btn layout-btn" onclick="showAdminTab('tab-password')" id="btn-tab-password">الحساب</button>
                 <button class="btn" onclick="logoutAdmin()" style="background:var(--color-bg); color:var(--color-text); border:1px solid var(--color-text);">خروج</button>
             </div>
 
             <div id="tab-questions" class="admin-tab-content booking-container reveal">
-                <h3>أسئلة ما قبل الحجز</h3>
+                <h3>استبيان الاستشارة</h3>
                 <div id="adminQuestionsList"></div>
                 <button class="btn outline" style="margin-top:15px;" onclick="addAdminQuestion()">+ إضافة سؤال</button>
                 <hr style="margin:30px 0; border:0; border-top:1px solid #eaeaea;">
@@ -856,11 +861,13 @@
 
         // Run immediately
         const initSavedImages = () => {
-            const ls = JSON.parse(localStorage.getItem('admin_images') || '{}');
-            document.querySelectorAll('img[data-edit]').forEach(img => {
-                const id = img.getAttribute('data-edit');
-                if(ls[id]) img.src = ls[id];
-            });
+            try {
+                const ls = JSON.parse(localStorage.getItem('admin_images') || '{}');
+                document.querySelectorAll('img[data-edit]').forEach(img => {
+                    const id = img.getAttribute('data-edit');
+                    if(ls && ls[id]) img.src = ls[id];
+                });
+            } catch(e) {}
         };
         initSavedImages();
 
@@ -978,6 +985,52 @@
             localStorage.setItem(STORAGE_KEY, JSON.stringify(bookings));
         }
 
+        function selectDate(element, dStr) {
+            document.querySelectorAll('#calendarDates .date-card').forEach(c => c.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedDateStr = dStr;
+            
+            selectedTimeStr = null;
+            document.querySelectorAll('.time-slot').forEach(t => t.classList.remove('selected'));
+            
+            const bookings = getBookings();
+            const bookedTimesForDate = bookings[dStr] || [];
+            
+            document.querySelectorAll('.time-slot').forEach(t => {
+                const timeText = t.textContent.trim();
+                if(bookedTimesForDate.includes(timeText)) {
+                    t.classList.add('booked');
+                } else {
+                    t.classList.remove('booked');
+                }
+            });
+        }
+
+        function selectTime(element, tStr) {
+            if(element.classList.contains('booked')) return;
+            document.querySelectorAll('.time-slot').forEach(t => t.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedTimeStr = tStr;
+        }
+
+        function submitBooking(event) {
+            event.preventDefault();
+            if(!selectedDateStr || !selectedTimeStr) {
+                alert('الرجاء اختيار التاريخ والوقت المناسب أولاً');
+                return;
+            }
+            const name = document.getElementById('clientName').value.trim();
+            const phone = document.getElementById('clientPhone').value.trim();
+            
+            addBooking(selectedDateStr, selectedTimeStr);
+            
+            const msg = `مرحباً، أود حجز استشارة مظهر:\nالاسم: ${name}\nرقم الواتساب: ${phone}\nالتاريخ: ${selectedDateStr}\nالوقت: ${selectedTimeStr}\n(تم استلام الخيارات)`;
+            
+            alert('تم تأكيد الحجز المبدئي! سيتم تحويلك للواتساب الآن...');
+            window.open('https://wa.me/0000000000?text=' + encodeURIComponent(msg), '_blank');
+            navigate('home');
+        }
+
         // --- Pre-Booking Logic ---
         function getSafeAdminQuestions() {
             let qs = null;
@@ -992,7 +1045,7 @@
                     'كيف سمعتِ عنا؟',
                     'هل سبق لكِ حجز استشارة مظهر من قبل؟'
                 ];
-                localStorage.setItem('admin_questions', JSON.stringify(qs));
+                try { localStorage.setItem('admin_questions', JSON.stringify(qs)); } catch(e) {}
             }
             return qs;
         }
