@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مستشارة المظهر - أناقة راقية</title>
+    <!-- Font Awesome updated to v6.5.1 to fix layout for X-twitter graphic -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700&family=Cairo:wght@300;400;600&display=swap');
+
+        :root {
+            /* Updated Color Palette */
+            --color-bg: #F5F0E8; /* Light airy beige primary background */
+            --color-accent: #D4CBA8; /* Warm beige for accents, borders, hover states */
+            --color-text: #1C2B5E; /* Navy for text and UI elements */
+            
+            --font-serif: 'Amiri', serif;
+            --font-sans: 'Cairo', sans-serif;
+            --spacing-unit: 1rem;
+            --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-serif);
+            font-weight: 400;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* --- Animations & Transitions --- */
+        .page {
+            display: none;
+            min-height: 100vh;
+            padding-top: 80px;
+            animation: slideFadeIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+        .page.active {
+            display: block;
+        }
+
+        @keyframes slideFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Ripple effect */
+        .btn {
+            position: relative;
+            overflow: hidden;
+            font-family: var(--font-sans);
+            cursor: pointer;
+            border: 1px solid var(--color-text);
+            background-color: var(--color-text);
+            color: #ffffff; /* White text looks better inside navy button */
+            padding: 12px 30px;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            transition: var(--transition);
+            border-radius: 4px; /* Slight rounding for general buttons */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn:hover {
+            background-color: var(--color-accent);
+            color: var(--color-text);
+            border-color: var(--color-accent);
+        }
+        .btn.outline {
+            background-color: transparent;
+            color: var(--color-text);
+        }
+        .btn.outline:hover {
+            background-color: var(--color-accent);
+            color: var(--color-text);
+            border-color: var(--color-accent);
+        }
+
+        span.ripple {
+            position: absolute;
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple-anim 600ms linear;
+            background-color: rgba(255, 255, 255, 0.4);
+            pointer-events: none;
+        }
+        @keyframes ripple-anim {
+            to { transform: scale(4); opacity: 0; }
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            background-color: rgba(245, 240, 232, 0.95); /* opacity on new bg */
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: var(--transition);
+            border-bottom: 1px solid transparent;
+        }
+        .navbar.scrolled {
+            height: 60px;
+            border-bottom: 1px solid var(--color-accent); /* Accent border */
+        }
+        .nav-left, .nav-right { display: flex; align-items: center; flex: 1; }
+        .nav-right { justify-content: flex-end; gap: 20px; }
+        
+        .nav-center {
+            text-align: center;
+            flex: 1;
+        }
+        .nav-center img {
+            height: 105px;
+            width: auto;
+            opacity: 1;
+            visibility: visible;
+            object-fit: contain;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .navbar.scrolled .nav-center img {
+            height: 75px;
+        }
+
+        .hamburger {
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--color-text);
+        }
+
+        /* Drawer Menu */
+        .drawer {
+            position: fixed;
+            top: 0;
+            right: -350px;
+            width: 350px;
+            height: 100vh;
+            background-color: var(--color-bg);
+            z-index: 1001;
+            transition: var(--transition);
+            padding: 80px 40px;
+            box-shadow: -2px 0 20px rgba(28, 43, 94, 0.05);
+            border-left: 1px solid var(--color-accent);
+        }
+        .drawer.open { right: 0; }
+        .drawer-close {
+            position: absolute;
+            top: 25px;
+            left: 30px;
+            font-size: 1.5rem;
+            color: var(--color-text);
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        .drawer-nav {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-top: 50px;
+        }
+        .drawer-link {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+        .drawer-link:hover, .drawer-link.active { opacity: 1; }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(28, 43, 94, 0.3); /* Navy overlay */
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .overlay.open { opacity: 1; pointer-events: all; }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin: 60px 0 40px;
+            letter-spacing: 1px;
+        }
+        .content-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+
+        /* --- Home Page (Editorial) --- */
+        .hero {
+            position: relative;
+            width: 100vw;
+            margin: 0;
+            padding: 0;
+            left: 0;
+            right: 0;
+            overflow: hidden;
+            border-bottom: 1px solid var(--color-accent);
+        }
+        .hero video { 
+            width: 100vw;
+            margin: 0;
+            padding: 0;
+            left: 0;
+            right: 0;
+            height: 80vh;
+            object-fit: cover;
+            display: block;
+        }
+        .hero-placeholder {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--color-text); font-size: 1.2rem;
+            background-color: var(--color-accent);
+        }
+        .hero-overlay {
+            position: absolute; bottom: 0; right: 0; width: 100%;
+            padding: 60px 40px;
+            background: linear-gradient(to top, rgba(28, 43, 94, 0.7) 0%, rgba(28, 43, 94, 0) 100%);
+            color: #ffffff; /* Contrast text inside overlay */
+            display: flex; flex-direction: column; align-items: flex-start;
+        }
+        .hero-category { font-size: 1rem; letter-spacing: 2px; margin-bottom: 10px; }
+        .hero-title { font-size: 3.5rem; margin-bottom: 25px; line-height: 1.1; }
+        .hero-overlay .btn { background-color: #ffffff; color: var(--color-text); border: none; }
+        .hero-overlay .btn:hover { background-color: var(--color-accent); }
+
+        .editorial-section {
+            position: relative;
+            width: 100vw;
+            margin: 0;
+            padding: 0;
+            left: 0;
+            right: 0;
+            overflow: hidden;
+            border-bottom: 1px solid var(--color-accent);
+        }
+        .editorial-section img { 
+            width: 100vw;
+            margin: 0;
+            padding: 0;
+            left: 0;
+            right: 0;
+            height: 80vh;
+            object-fit: cover;
+            display: block;
+        }
+        .editorial-overlay {
+            position: absolute; bottom: 0; right: 0; width: 100%;
+            padding: 60px 40px;
+            background: linear-gradient(to top, rgba(28, 43, 94, 0.7) 0%, rgba(28, 43, 94, 0) 100%);
+            color: #ffffff;
+            display: flex; flex-direction: column; align-items: flex-start;
+        }
+        .editorial-category { font-size: 1rem; letter-spacing: 2px; margin-bottom: 10px; }
+        .editorial-title { font-size: 3rem; margin-bottom: 25px; line-height: 1.1; font-family: var(--font-serif); }
+        .editorial-overlay .btn { background-color: #ffffff; color: var(--color-text); border: none; }
+        .editorial-overlay .btn:hover { background-color: var(--color-accent); }
+
+        /* --- About Page --- */
+        .about-section { padding: 40px 0 80px; }
+        .about-content { text-align: center; max-width: 800px; margin: 0 auto; }
+        .about-content h2 { font-size: 2.5rem; margin-bottom: 30px; }
+        .about-content p { margin-bottom: 25px; font-size: 1.2rem; line-height: 2; color: var(--color-text); }
+
+        /* --- Services Page & Booking --- */
+        .service-details { max-width: 800px; margin: 0 auto 60px; text-align: center; }
+        .service-details p { margin-bottom: 30px; font-size: 1.15rem; line-height: 1.8; }
+
+        /* Fancy Float Booking Card */
+        .booking-container {
+            background: #ffffff; /* Keeps card popping out of the F5F0E8 background */
+            border-radius: 20px;
+            box-shadow: 0 15px 45px rgba(28, 43, 94, 0.08); /* Deep soft shadow */
+            padding: 50px 40px;
+            max-width: 650px;
+            margin: 0 auto 60px;
+            position: relative;
+        }
+        
+        .booking-brand {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--color-accent);
+            padding-bottom: 20px;
+        }
+        .booking-brand img {
+            max-height: 45px;
+        }
+
+        .booking-step { margin-bottom: 40px; }
+        .booking-step:last-child { margin-bottom: 10px; }
+        
+        .booking-step h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--color-text);
+        }
+
+        .calendar-dates {
+            display: flex; gap: 15px; overflow-x: auto; padding-bottom: 15px;
+            -webkit-overflow-scrolling: touch;
+        }
+        .date-card {
+            border: 1px solid var(--color-accent);
+            border-radius: 16px;
+            padding: 20px 15px;
+            text-align: center;
+            cursor: pointer;
+            min-width: 110px;
+            flex-shrink: 0;
+            transition: var(--transition);
+            background-color: transparent;
+        }
+        .date-card:hover { border-color: var(--color-text); }
+        .date-card.selected { background-color: var(--color-text); color: #ffffff; border-color: var(--color-text); }
+        .date-card .day { font-size: 1rem; margin-bottom: 10px; }
+        .date-card .num { font-size: 1.8rem; font-family: var(--font-serif); }
+
+        .time-slots {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px;
+            direction: ltr; /* Keeps time slots easily readable */
+        }
+        .time-slot {
+            border: 1px solid var(--color-accent);
+            border-radius: 16px;
+            padding: 16px; text-align: center; cursor: pointer; font-size: 1.05rem;
+            transition: var(--transition);
+        }
+        .time-slot:not(.booked):hover { background-color: var(--color-accent); border-color: var(--color-accent); }
+        .time-slot.selected { background-color: var(--color-text); color: #ffffff; border-color: var(--color-text); }
+        .time-slot.booked {
+            opacity: 0.5; background-color: #f9f9f9; cursor: not-allowed; text-decoration: line-through; border-style: dashed;
+        }
+
+        /* Floating Labels Formula */
+        .booking-form {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        .form-group {
+            position: relative;
+        }
+        .form-group input {
+            width: 100%;
+            border: 1px solid var(--color-accent);
+            border-radius: 16px;
+            padding: 24px 20px 8px; /* Room at top for label */
+            font-family: var(--font-sans);
+            font-size: 1.05rem;
+            outline: none;
+            background-color: #ffffff;
+            color: var(--color-text);
+            transition: var(--transition);
+        }
+        .form-group input:focus {
+            border-color: var(--color-text);
+            box-shadow: 0 0 0 4px rgba(28, 43, 94, 0.05);
+        }
+        .form-group label {
+            position: absolute;
+            top: 18px;
+            right: 20px;
+            font-size: 1rem;
+            color: #888;
+            pointer-events: none;
+            transition: all 0.2s ease;
+        }
+        .form-group input:focus ~ label,
+        .form-group input:not(:placeholder-shown) ~ label {
+            top: 6px;
+            font-size: 0.75rem;
+            color: var(--color-text);
+            font-weight: 600;
+        }
+
+        .booking-form .btn {
+            border-radius: 16px;
+            padding: 16px;
+            font-size: 1.1rem;
+        }
+
+        /* --- Shop Page --- */
+        .shop-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 40px; padding-bottom: 80px;
+        }
+        .product-card { text-align: center; }
+        .product-image {
+            width: 80%; display: block; margin: 0 auto 20px auto;
+            aspect-ratio: 3/4; object-fit: contain;
+            border: 1px solid var(--color-accent);
+            border-radius: 4px;
+        }
+        .product-title { font-family: var(--font-sans); font-weight: 600; font-size: 1.1rem; margin-bottom: 8px; }
+        .product-price { font-family: var(--font-sans); font-size: 1.1rem; margin-bottom: 15px; }
+        
+        .payment-methods {
+            text-align: center; padding: 40px 0; border-top: 1px solid var(--color-accent); margin-top: 40px;
+        }
+        .payment-icons {
+            display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 15px; direction: ltr;
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: #ffffff; /* Crisp white background for footer */
+            color: var(--color-text);
+            padding: 40px 5% 20px;
+            margin-top: 40px;
+            border-top: 1px solid var(--color-accent);
+        }
+        .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin-bottom: 20px; }
+        .footer-col h4 { font-family: var(--font-serif); font-size: 1.2rem; margin-bottom: 15px; }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 8px; }
+        .footer-col a { color: var(--color-text); font-size: 0.95rem; transition: opacity 0.3s; opacity: 0.8; }
+        .footer-col a:hover { opacity: 1; color: var(--color-text); text-decoration: underline; }
+        .footer-col p { opacity: 0.8; font-size: 0.9rem; margin-bottom: 5px; }
+        
+        .footer-logo {
+            margin-bottom: 15px;
+        }
+        .footer-logo img {
+            max-height: 40px;
+        }
+
+        .footer-bottom {
+            text-align: center; padding-top: 20px; border-top: 1px solid var(--color-accent); font-size: 0.85rem; opacity: 0.8;
+        }
+        
+        /* Real Brand Icons Styling */
+        .social-icons {
+            display: flex; gap: 15px; align-items: center; margin-top: 10px; flex-wrap: wrap;
+        }
+        .social-icons a {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 38px; height: 38px; border-radius: 50%;
+            background: #f5f5f5; /* Soft container */
+            font-size: 1.2rem; text-decoration: none;
+            transition: transform 0.3s ease; opacity: 1; /* Reset opacity */
+        }
+        .social-icons a:hover { transform: scale(1.1); text-decoration: none; }
+        
+        /* Specific Brand Colors */
+        .icon-ig {
+            background: #f09433 !important; 
+            background: -moz-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%) !important; 
+            background: -webkit-linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%) !important;
+            color: white !important;
+        }
+        .icon-tiktok { background: #000 !important; color: white !important; }
+        .icon-x { background: #000 !important; color: white !important; }
+        .icon-yt { background: #FF0000 !important; color: white !important; }
+        .icon-snap { background: #FFFC00 !important; color: #000 !important; }
+
+        /* Floating WhatsApp green */
+        .whatsapp-float {
+            position: fixed; bottom: 30px; left: 30px; width: 60px; height: 60px;
+            background-color: #25D366; /* Real WA color */
+            color: #ffffff;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 2.2rem; box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4); z-index: 999;
+            transition: transform 0.3s;
+        }
+        .whatsapp-float:hover { transform: scale(1.1); color: white; }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.5rem; }
+            .drawer { width: 300px; right: -300px; }
+            
+            /* Reduce frame heights on vertical phone screens to un-zoom the pics */
+            .editorial-section, .editorial-section img {
+                height: 50vh;
+            }
+            
+            .editorial-overlay { padding: 40px 20px; }
+            .editorial-title { font-size: 2.2rem; }
+
+            .booking-container { padding: 30px 20px; border-radius: 16px; margin: 0 15px 40px; box-shadow: 0 8px 30px rgba(28, 43, 94, 0.06); }
+            .date-card { padding: 18px 10px; min-width: 90px; }
+            .time-slot { padding: 18px; font-size: 1.15rem; }
+            
+            .footer-content { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-left">
+            <button class="hamburger" id="menuToggle"><i class="fa-solid fa-bars"></i></button>
+        </div>
+        <div class="nav-center">
+            <a href="#" onclick="navigate('home')"><img src="Logo.png" alt="شعار الماركة"></a>
+        </div>
+        <div class="nav-right"></div>
+    </nav>
+
+    <!-- Drawer Navigation -->
+    <div class="overlay" id="overlay"></div>
+    <div class="drawer" id="drawer">
+        <button class="drawer-close" id="drawerClose"><i class="fa-solid fa-xmark"></i></button>
+        <ul class="drawer-nav">
+            <li><a href="#" class="drawer-link active" onclick="navigate('home')">الرئيسية</a></li>
+            <li><a href="#" class="drawer-link" onclick="navigate('about')">من نحن</a></li>
+            <li><a href="#" class="drawer-link" onclick="navigate('services')">خدماتنا</a></li>
+            <li><a href="#" class="drawer-link" onclick="navigate('shop')">المتجر</a></li>
+        </ul>
+    </div>
+
+    <!-- HOME PAGE -->
+    <section id="home" class="page active" style="padding-top:0;">
+        <div class="hero">
+            <div class="hero-placeholder">مساحة مخصصة للفيديو</div>
+            <video autoplay loop muted playsinline src=""></video>
+            <div class="hero-overlay reveal">
+                <div class="hero-category">مستشارة مظهر</div>
+                <h1 class="hero-title">اكتشفي أسلوبك<br>الخاص المتميز</h1>
+                <button class="btn layout-btn" onclick="navigate('services')">احجزي الآن</button>
+            </div>
+        </div>
+        
+        <div class="reveal editorial-section">
+             <img src="pic 1.png" alt="مظهر ١">
+             <div class="editorial-overlay">
+                 <div class="editorial-category">المجموعة الجديدة</div>
+                 <h2 class="editorial-title">أناقة الخريف</h2>
+                 <button class="btn" onclick="navigate('shop')">اكتشفي المزيد</button>
+             </div>
+        </div>
+
+        <div class="reveal editorial-section">
+             <img src="pic 5.png" alt="مظهر ٢">
+             <div class="editorial-overlay">
+                 <div class="editorial-category">إطلالات كلاسيكية</div>
+                 <h2 class="editorial-title">جماليات ثابتة</h2>
+                 <button class="btn" onclick="navigate('shop')">تسوّقي المظهر</button>
+             </div>
+        </div>
+
+        <div class="reveal editorial-section">
+             <img src="pic 3.png" alt="مظهر ٣">
+             <div class="editorial-overlay">
+                 <div class="editorial-category">أحدث التنسيقات</div>
+                 <h2 class="editorial-title">تفاصيل تصنع الفارق</h2>
+                 <button class="btn" onclick="navigate('services')">احجزي استشارة</button>
+             </div>
+        </div>
+    </section>
+
+    <!-- ABOUT PAGE -->
+    <section id="about" class="page reveal">
+        <div class="content-container" style="max-width: 800px;">
+            <h1 class="section-title">نبذة عن المستشارة</h1>
+            <div class="about-section">
+                <div class="about-content">
+                    <h2>رؤية للأناقة</h2>
+                    <p>مرحباً بكم. أنا مستشارة مظهر وأزياء ملتزمة بالارتقاء بأسلوبك الشخصي. من خلال نهج راقٍ في اختيار الملابس وتنسيقها، أساعد أينما كنت في ترجمة الثقة الداخلية إلى حضور خارجي متميز يلفت الأنظار.</p>
+                    <p>لدي رؤية تتسم بالفخامة البسيطة، والحياكة المتقنة، والأناقة التي تدوم طويلًا. أؤمن ببناء خزانة ملابس تتجاوز حدود المواسم ولا تنتهي موضتها. دعينا نبدأ معاً رحلة اكتشاف أسلوبك الخاص والفريد.</p>
+                    <button class="btn outline" style="margin-top:20px;" onclick="navigate('services')">عرض الخدمات</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES PAGE -->
+    <section id="services" class="page reveal">
+        <div class="content-container">
+            <h1 class="section-title">استشارة المظهر<br><span style="font-size: 1.2rem; font-family: var(--font-sans); display: block; margin-top:10px;">Appearance Consultation</span></h1>
+            
+            <div class="service-details">
+                <p>جلسة حصرية فردية مصممة لإعادة صياغة مظهرك الشخصي. سنقوم بتحليل شكل الجسم، ولوحة الألوان المناسبة لك، وأسلوب حياتك لبناء إطلالة مميزة تعبّر عن ثقتك وأناقتك الراقية بكل دقة.</p>
+            </div>
+
+            <!-- Redesigned Booking Form Card -->
+            <div class="booking-container reveal">
+                <div class="booking-brand">
+                    <img src="Logo.png" alt="شعار الماركة">
+                </div>
+
+                <div class="booking-step">
+                    <h3>١. اختاري التاريخ</h3>
+                    <div class="calendar-dates" id="calendarDates"></div>
+                </div>
+
+                <div class="booking-step">
+                    <h3>٢. اختاري الوقت المناسب</h3>
+                    <div class="time-slots" id="timeSlots">
+                        <div class="time-slot" onclick="selectTime(this, '10:00 AM')">10:00 AM</div>
+                        <div class="time-slot" onclick="selectTime(this, '1:00 PM')">1:00 PM</div>
+                        <div class="time-slot" onclick="selectTime(this, '3:30 PM')">3:30 PM</div>
+                        <div class="time-slot" onclick="selectTime(this, '5:00 PM')">5:00 PM</div>
+                    </div>
+                </div>
+
+                <div class="booking-step" style="border:none;">
+                    <h3>٣. بياناتك الشخصية</h3>
+                    <form class="booking-form" onsubmit="submitBooking(event)">
+                        <div class="form-group">
+                            <!-- Placeholder is a space to allow CSS :placeholder-shown to work effectively without showing messy text -->
+                            <input type="text" id="clientName" placeholder=" " required>
+                            <label>الاسم الكامل</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" id="clientPhone" placeholder=" " dir="ltr" style="text-align: right;" required>
+                            <label>رقم الهاتف (واتساب)</label>
+                        </div>
+                        <button type="submit" class="btn">حجز الخدمة</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SHOP PAGE -->
+    <section id="shop" class="page reveal">
+        <div class="content-container">
+            <h1 class="section-title">المتجر<br><span style="font-size: 1.2rem; font-family: var(--font-sans); display: block; margin-top:10px;">مجموعة مختارة</span></h1>
+            
+            <div class="shop-grid">
+                <div class="product-card reveal">
+                    <img src="pic 1.png" class="product-image" alt="منتج ١">
+                    <div class="product-title">جاكيت تويد كلاسيكي</div>
+                    <div class="product-price">$850</div>
+                    <button class="btn outline" onclick="alert('تمت الإضافة للسلة')">إضافة للسلة</button>
+                </div>
+                <div class="product-card reveal">
+                    <img src="pic 5.png" class="product-image" alt="منتج ٢">
+                    <div class="product-title">بلوزة حرير مسائية</div>
+                    <div class="product-price">$420</div>
+                    <button class="btn outline" onclick="alert('تمت الإضافة للسلة')">إضافة للسلة</button>
+                </div>
+                <div class="product-card reveal">
+                    <img src="pic 2.png" class="product-image" alt="منتج ٣">
+                    <div class="product-title">بنطلون بتفصيل متقن</div>
+                    <div class="product-price">$600</div>
+                    <button class="btn outline" onclick="alert('تمت الإضافة للسلة')">إضافة للسلة</button>
+                </div>
+            </div>
+
+            <div class="payment-methods reveal">
+                <p>دفع إلكتروني آمن</p>
+                <div class="payment-icons">
+                    <svg width="40" height="24" viewBox="0 0 384 512" fill="#000000"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+                    
+                    <!-- Fixed using flawless Font-Awesome Visa Icon -->
+                    <i class="fa-brands fa-cc-visa" style="font-size: 2.8rem; color: #1434CB; line-height: 1;"></i>
+                    
+                    <svg width="40" height="24" viewBox="0 0 32 20">
+                        <circle cx="10" cy="10" r="10" fill="#EB001B"/>
+                        <circle cx="22" cy="10" r="10" fill="#F79E1B"/>
+                        <path d="M16 18A9.9 9.9 0 0 0 20 10A9.9 9.9 0 0 0 16 2A9.9 9.9 0 0 0 12 10A9.9 9.9 0 0 0 16 18Z" fill="#FF5F00"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="reveal">
+        <div class="content-container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <div class="footer-logo">
+                        <a href="#" onclick="navigate('home')"><img src="Logo.png" alt="شعار الماركة"></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>خدمة العملاء</h4>
+                    <ul>
+                        <li><a href="#">تواصل معنا</a></li>
+                        <li><a href="#">طرق الدفع</a></li>
+                        <li><a href="#">الأسئلة الشائعة</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>العلامة التجارية</h4>
+                    <ul>
+                        <li><a href="#" onclick="navigate('about'); return false;">من نحن</a></li>
+                        <li><a href="#">سياسة الخصوصية</a></li>
+                        <li><a href="#">الشروط والأحكام</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>الشهادات</h4>
+                    <p>رخصة العمل الحر رقم XXXXXX</p>
+                    <p>مستشارة مظهر معتمدة</p>
+                </div>
+                <div class="footer-col">
+                    <h4>حساباتنا</h4>
+                    <div class="social-icons">
+                        <a href="#" class="icon-ig"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="icon-tiktok"><i class="fa-brands fa-tiktok"></i></a>
+                        <a href="#" class="icon-snap"><i class="fa-brands fa-snapchat"></i></a>
+                        <a href="#" class="icon-x"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="#" class="icon-yt"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; <span id="year"></span> مستشارة المظهر. جميع الحقوق محفوظة. صُمم بأناقة راقية.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp using Real WA Green Icon -->
+    <a href="https://wa.me/YOUR_NO" target="_blank" class="whatsapp-float">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <script>
+        // --- Navigation Logic with Fade/Slide ---
+        function navigate(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+                // Re-trigger animation logic by removing and adding it back slightly after
+                page.style.animation = 'none';
+                page.offsetHeight; /* trigger reflow */
+                page.style.animation = null;
+            });
+            document.getElementById(pageId).classList.add('active');
+            
+            if(document.getElementById('drawer').classList.contains('open')) {
+                toggleDrawer();
+            }
+
+            document.querySelectorAll('.drawer-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            if (event && event.target.classList.contains('drawer-link')) {
+               event.target.classList.add('active');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Re-trigger scroll observer for new page
+            setTimeout(checkReveals, 100);
+        }
+
+        // --- Drawer Logic ---
+        const menuToggle = document.getElementById('menuToggle');
+        const drawerClose = document.getElementById('drawerClose');
+        const drawer = document.getElementById('drawer');
+        const overlay = document.getElementById('overlay');
+
+        function toggleDrawer() {
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('open');
+        }
+
+        menuToggle.addEventListener('click', toggleDrawer);
+        drawerClose.addEventListener('click', toggleDrawer);
+        overlay.addEventListener('click', toggleDrawer);
+
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Set Copyright Year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // --- Scroll Reveal Animation ---
+        function checkReveals() {
+            const reveals = document.querySelectorAll('.reveal');
+            const windowHeight = window.innerHeight;
+            reveals.forEach(reveal => {
+                const revealTop = reveal.getBoundingClientRect().top;
+                if (revealTop < windowHeight - 50) {
+                    reveal.classList.add('visible');
+                }
+            });
+        }
+        window.addEventListener('scroll', checkReveals);
+        window.addEventListener('load', checkReveals);
+
+        // --- Button Ripple Effect ---
+        document.querySelectorAll('.btn, .time-slot, .date-card, .drawer-link').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                let ripple = document.createElement('span');
+                ripple.classList.add('ripple');
+                this.appendChild(ripple);
+                
+                let rect = this.getBoundingClientRect();
+                // Check if click was triggered programmably or mouse
+                let x = e.clientX ? e.clientX - rect.left : rect.width / 2;
+                let y = e.clientY ? e.clientY - rect.top : rect.height / 2;
+                
+                ripple.style.left = `${x}px`;
+                ripple.style.top = `${y}px`;
+                
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // --- Booking Logic ---
+        let selectedDateStr = null;
+        let selectedTimeElement = null;
+        let selectedTimeStr = null;
+
+        const STORAGE_KEY = 'fashion_consultant_bookings';
+        
+        function getBookings() {
+            const data = localStorage.getItem(STORAGE_KEY);
+            return data ? JSON.parse(data) : {};
+        }
+
+        function addBooking(date, time) {
+            const bookings = getBookings();
+            if(!bookings[date]) bookings[date] = [];
+            bookings[date].push(time);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(bookings));
+        }
+
+        function renderCalendar() {
+            const datesContainer = document.getElementById('calendarDates');
+            datesContainer.innerHTML = '';
+            
+            const today = new Date();
+            const days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+
+            for(let i=1; i<=7; i++) {
+                const date = new Date(today);
+                date.setDate(today.getDate() + i);
+                
+                const dName = days[date.getDay()];
+                const dNum = date.getDate();
+                const dStr = date.toISOString().split('T')[0];
+
+                const card = document.createElement('div');
+                card.className = 'date-card';
+                card.innerHTML = `<div class="day">${dName}</div><div class="num">${dNum}</div>`;
+                
+                card.onclick = () => selectDate(card, dStr);
+                datesContainer.appendChild(card);
+
+                if(i === 1) selectDate(card, dStr);
+            }
+        }
+
+        function selectDate(element, dateStr) {
+            document.querySelectorAll('.date-card').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedDateStr = dateStr;
+            
+            selectedTimeStr = null;
+            if(selectedTimeElement) {
+                selectedTimeElement.classList.remove('selected');
+                selectedTimeElement = null;
+            }
+            syncBookedTimes(dateStr);
+        }
+
+        function syncBookedTimes(dateStr) {
+            const bookings = getBookings();
+            const bookedForDate = bookings[dateStr] || [];
+
+            document.querySelectorAll('.time-slot').forEach(slot => {
+                const t = slot.textContent;
+                slot.classList.remove('booked', 'selected');
+                
+                if (bookedForDate.includes(t)) {
+                    slot.classList.add('booked');
+                }
+            });
+        }
+
+        function selectTime(element, timeStr) {
+            if(element.classList.contains('booked')) return;
+            
+            document.querySelectorAll('.time-slot').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedTimeElement = element;
+            selectedTimeStr = timeStr;
+        }
+
+        function submitBooking(e) {
+            e.preventDefault();
+            
+            if(!selectedDateStr) {
+                alert('الرجاء اختيار التاريخ.'); return;
+            }
+            if(!selectedTimeStr) {
+                alert('الرجاء اختيار الوقت المناسب.'); return;
+            }
+
+            const name = document.getElementById('clientName').value;
+            // Add booking to LS
+            addBooking(selectedDateStr, selectedTimeStr);
+            syncBookedTimes(selectedDateStr);
+            selectedTimeStr = null;
+            
+            const whatsappNumber = "0000000000"; // REPLACE WITH ACTUAL WA NUMBER
+            const message = `مرحباً، أود تأكيد حجز استشارة المظهر.%0A%0A*الاسم:* ${name}%0A*التاريخ:* ${selectedDateStr}%0A*الوقت:* ${selectedTimeStr}%0A%0Aشكراً لك!`;
+            
+            const waUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
+            
+            e.target.reset();
+            window.open(waUrl, '_blank');
+        }
+
+        renderCalendar();
+    </script>
+</body>
+</html>
